@@ -1,23 +1,79 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import validator from "validator";
 
 function App() {
+  const [error, setError] = useState(null);
+
+  const [signupInput, setSignUpInput] = useState({
+    email: null,
+    password: null,
+    confirmPassword: null,
+  });
+
+  const handleChange = (e) => {
+    setSignUpInput({
+      ...signupInput,
+      [e.target.name]: e.target.value,
+    });
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!validator.isEmail(signupInput.email)) {
+      return setError("email address should have a valid value");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <div className="container my-5">
+      <form>
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">
+            Email address
+          </label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="form-control"
+            value={signupInput.email}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            password
+          </label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="form-control"
+            value={signupInput.password}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="confirm_password" className="form-label">
+            Confirm Password
+          </label>
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirmPassword"
+            className="form-control"
+            value={signupInput.confirmPassword}
+            onChange={handleChange}
+          />
+        </div>
+        {error && <p className="text-danger">{error}</p>}
+        <button
+          type="submit"
+          onClick={(e) => handleSubmit(e)}
+          className="btn btn-primary"
         >
-          Learn React
-        </a>
-      </header>
+          Submit form
+        </button>
+      </form>
     </div>
   );
 }

@@ -99,3 +99,8 @@ test("password and confirm password should be equal", () => {
 
   expect(passwordInput.value).toBe(confirmPasswordInput.value);
 });
+
+
+
+
+

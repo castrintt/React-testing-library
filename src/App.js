@@ -2,12 +2,12 @@ import { useState } from "react";
 import validator from "validator";
 
 function App() {
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
 
   const [signupInput, setSignUpInput] = useState({
-    email: null,
-    password: null,
-    confirmPassword: null,
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
 
   const handleChange = (e) => {
@@ -20,6 +20,10 @@ function App() {
     e.preventDefault();
     if (!validator.isEmail(signupInput.email)) {
       return setError("email address should have a valid value");
+    } else if (signupInput.password.length < 5) {
+      return setError(
+        "the password you entered should contain at least 5 characters"
+      );
     }
   };
 
@@ -44,6 +48,7 @@ function App() {
             password
           </label>
           <input
+            data-testid={"password"}
             type="password"
             id="password"
             name="password"
@@ -57,6 +62,7 @@ function App() {
             Confirm Password
           </label>
           <input
+            data-testid={"confirm"}
             type="password"
             id="confirm_password"
             name="confirmPassword"
@@ -65,11 +71,16 @@ function App() {
             onChange={handleChange}
           />
         </div>
-        {error && <p className="text-danger">{error}</p>}
+        {error && (
+          <p data-testid={"errorMessage"} className="text-danger">
+            {error}
+          </p>
+        )}
         <button
           type="submit"
           onClick={(e) => handleSubmit(e)}
           className="btn btn-primary"
+          data-testid={"submitButton"}
         >
           Submit form
         </button>
